@@ -1,0 +1,19 @@
+publish:
+  docker:
+    username: $$DOCKER_USERNAME
+    password: $$DOCKER_PASSWORD
+    email: $$DOCKER_EMAIL
+    registry: registry.aliyuncs.com
+    repo: xiaolu-img/nginx
+    tag: latest
+    file: Dockerfile
+    mirror: https://n5fb0zgg.mirror.aliyuncs.com
+deploy:
+  ssh:
+    host: dev.huyi.so
+    user: root
+    commands:
+      - docker pull registry.aliyuncs.com/xiaolu-img/nginx
+      - docker rm -f nginx
+      - docker run --name=nginx -p 0.0.0.0:80:80 -d --volumes-from=static registry.aliyuncs.com/xiaolu-img/nginx
+
