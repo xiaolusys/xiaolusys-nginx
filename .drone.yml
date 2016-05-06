@@ -1,5 +1,5 @@
 build:
-  image: registry.aliyuncs.com/xiaolu-img/xiaolusys-nginx
+  image: registry.aliyuncs.com/xiaolu-img/nginx:latest
   commands:
     - /etc/init.d/nginx configtest
   when:
