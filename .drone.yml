@@ -1,3 +1,9 @@
+build:
+  image: registry.aliyuncs.com/xiaolu-img/xiaolusys-nginx:latest
+  commands:
+    - /etc/init.d/nginx configtest
+  when:
+    branch: master
 publish:
   docker:
     username: $$DOCKER_USERNAME
@@ -8,6 +14,8 @@ publish:
     tag: latest
     file: Dockerfile
     mirror: https://n5fb0zgg.mirror.aliyuncs.com
+    when:
+      branch: master
 deploy:
   ssh:
     host: staging.xiaolumm.com
