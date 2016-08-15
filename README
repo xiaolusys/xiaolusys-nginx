@@ -1,0 +1,13 @@
+Config
+-------
+
+## first
+```
+create domain.conf file and write settings
+```
+
+## second
+```
+add domain.conf to Docklefile, like:
+add domain.conf /etc/nginx/conf.d
+```
