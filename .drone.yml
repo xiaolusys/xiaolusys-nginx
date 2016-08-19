@@ -3,7 +3,7 @@ build:
   commands:
     - /etc/init.d/nginx configtest
   when:
-    branch: master
+    branch: [staging, master]
 publish:
   docker:
     username: $$DOCKER_USERNAME
@@ -15,18 +15,25 @@ publish:
     file: Dockerfile
     mirror: https://n5fb0zgg.mirror.aliyuncs.com
     when:
-      branch: master
+      branch: [staging, master]
 deploy:
   ssh:
-    host: staging.xiaolumm.com
+    host:
+      - staging.xiaolumm.com
     user: root
+    when:
+      branch: staging
     commands:
       - docker pull registry.aliyuncs.com/xiaolu-img/nginx
       - docker rm -f nginx
       - docker run --name=nginx --restart=always -p 0.0.0.0:80:80 -d --volumes-from=static registry.aliyuncs.com/xiaolu-img/nginx
   ssh:
-    host: sale.xiaolumm.com
+    host:
+      - staging.xiaolumm.com 
+      - sale.xiaolumm.com
     user: root
+    when:
+      branch: master
     commands:
       - docker pull registry.aliyuncs.com/xiaolu-img/nginx
       - docker rm -f nginx
