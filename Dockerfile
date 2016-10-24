@@ -10,3 +10,4 @@ add gitlab.conf /etc/nginx/conf.d/
 add flower.conf /etc/nginx/conf.d/
 add forum-staging.conf /etc/nginx/conf.d/
 add forum.conf /etc/nginx/conf.d/
+add warden.conf /etc/nginx/conf.d/
