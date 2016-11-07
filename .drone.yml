@@ -26,10 +26,9 @@ deploy:
     commands:
       - docker pull registry.aliyuncs.com/xiaolu-img/nginx
       - docker rm -f nginx
-      - docker run --name=nginx --restart=always -p 0.0.0.0:80:80 -d --volumes-from=static registry.aliyuncs.com/xiaolu-img/nginx
+      - docker run --name=nginx --restart=always -p 0.0.0.0:80:80 -d -v /var/data:/data registry.aliyuncs.com/xiaolu-img/nginx
   ssh:
     host:
-      - staging.xiaolumm.com 
       - sale.xiaolumm.com
     user: root
     when:
