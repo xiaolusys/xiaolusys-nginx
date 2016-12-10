@@ -1,5 +1,5 @@
 from nginx
-run mkdir /data/verify
+run mkdir -p /data/verify
 
 add nginx.conf /etc/nginx/
 add default.conf /etc/nginx/conf.d/
