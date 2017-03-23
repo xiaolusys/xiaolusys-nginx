@@ -5,8 +5,11 @@ node {
     sh("docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} registry.aliyuncs.com")
   }
   if (env.BRANCH_NAME == "ui") {
+    sh("mkdir -p data/console")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console cp -rf console /workspace/data/console')
+    sh("mkdir -p data/site_media")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:latest cp -rf static /workspace/data/site_media')
+    sh("mkdir -p data/mall")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf mall /workspace/data/mall')
   }
   sh("docker build -t ${imageTag} .")
