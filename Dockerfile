@@ -1,5 +1,6 @@
 from nginx
 run mkdir -p /data/verify
+run mkdir -p /data/log
 
 add .htpasswd /etc/nginx/
 add nginx.conf /etc/nginx/
