@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: static
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: "static"
+  template:
+    metadata:
+      labels:
+        app: static
+    spec:
+      nodeSelector:
+        node: "true"
+      imagePullSecrets:
+        - name: aliyunrepo
+      containers:
+        - name: nginx
+          image: "registry.aliyuncs.com/xiaolu-img/nginx:IMAGE_TAG"
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"

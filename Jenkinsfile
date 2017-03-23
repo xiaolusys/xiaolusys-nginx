@@ -4,9 +4,19 @@ node {
   withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
     sh("docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} registry.aliyuncs.com")
   }
+  if (env.BRANCH_NAME == "ui") {
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console cp -rf console /workspace/data/console')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:latest cp -rf static /workspace/data/site_media')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf mall /workspace/data/mall')
+  }
   sh("docker build -t ${imageTag} .")
   sh("docker push ${imageTag}")
-  sh("sed -ie 's/IMAGE_TAG/${env.BRANCH_NAME}.${env.BUILD_NUMBER}/g' nginx-deployment.yaml")
-  sh("kubectl apply -f nginx-deployment.yaml -n default")
+  if (env.BRANCH_NAME == "ui") {
+    sh("sed -ie 's/IMAGE_TAG/${env.BRANCH_NAME}.${env.BUILD_NUMBER}/g' static-deployment.yaml")
+    sh("kubectl apply -f static-deployment.yaml -n default")
+  } else {
+    sh("sed -ie 's/IMAGE_TAG/${env.BRANCH_NAME}.${env.BUILD_NUMBER}/g' nginx-deployment.yaml")
+    sh("kubectl apply -f nginx-deployment.yaml -n default")
+  }
 }
 
