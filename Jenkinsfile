@@ -6,19 +6,19 @@ node {
   }
   if (env.BRANCH_NAME == "ui-master") {
     sh("mkdir -p data/console")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-master cp -rf /var/www/console /workspace/data/console')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-k8s cp -rf /var/www/console /workspace/data/console')
     sh("mkdir -p data/site_media")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:master cp -rf /var/www/static /workspace/data/site_media')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:latest cp -rf /var/www/static /workspace/data/site_media')
     sh("mkdir -p data/mall")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall-master cp -rf /var/www/mall /workspace/data/mall')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
   }
   if (env.BRANCH_NAME == "ui-staging") {
     sh("mkdir -p data/console")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-staging cp -rf /var/www/console /workspace/data/console')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-k8s cp -rf /var/www/console /workspace/data/console')
     sh("mkdir -p data/site_media")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:staging cp -rf /var/www/static /workspace/data/site_media')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:latest cp -rf /var/www/static /workspace/data/site_media')
     sh("mkdir -p data/mall")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall-staging cp -rf /var/www/mall /workspace/data/mall')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
   }
   sh("docker build -t ${imageTag} .")
   sh("docker push ${imageTag}")
@@ -28,9 +28,10 @@ node {
   } 
   
   if (env.BRANCH_NAME == "ui-staging") {
-    sh("sed -ie 's/IMAGE_TAG/${env.BRANCH_NAME}.${env.BUILD_NUMBER}/g' static-deployment.yaml")
+    sh("sed -ie 's/IMAGE_TAG/${env.BRANCH_NAME}.${env.BUILD_NUMBER}/g' static-staging-deployment.yaml")
     sh("kubectl apply -f static-staging-deployment.yaml -n default")
   }
+
   if (env.BRANCH_NAME == "k8s") {
     sh("sed -ie 's/IMAGE_TAG/${env.BRANCH_NAME}.${env.BUILD_NUMBER}/g' nginx-deployment.yaml")
     sh("kubectl apply -f nginx-deployment.yaml -n default")
