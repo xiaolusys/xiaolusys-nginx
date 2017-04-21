@@ -4,6 +4,7 @@ node {
   withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
     sh("docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} registry.aliyuncs.com")
   }
+  sh("mkdir -p data")
   if (env.BRANCH_NAME == "ui-master") {
     sh("mkdir -p data/console")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-master cp -rf /var/www/console /workspace/data/console')
