@@ -19,7 +19,7 @@ node {
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
   }
   sh("mkdir -p data/site_media")
-  sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/ndpuz-img/ndpuzsys-ui:latest cp -rf /var/www/static /workspace/data/site_media')
+  sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:latest cp -rf /var/www/static /workspace/data/site_media')
   sh("docker build -t ${imageTag} .")
   sh("docker push ${imageTag}")
   if (env.BRANCH_NAME == "ui-master") {
