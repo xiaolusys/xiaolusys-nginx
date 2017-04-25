@@ -4,23 +4,22 @@ node {
   withCredentials([usernamePassword(credentialsId: 'docker', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
     sh("docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD} registry.aliyuncs.com")
   }
-  sh("mkdir -p data")
+  sh("mkdir -p data/log")
+  sh('docker run --rm -v "$PWD/conf.d":/etc/nginx/conf.d -v "$PWD/nginx.conf":/etc/nginx/nginx.conf -v "$PWD/data":/data nginx /etc/init.d/nginx configtest')
   if (env.BRANCH_NAME == "ui-master") {
     sh("mkdir -p data/console")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-master cp -rf /var/www/console /workspace/data/console')
-    sh("mkdir -p data/site_media")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:master cp -rf /var/www/static /workspace/data/site_media')
     sh("mkdir -p data/mall")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
   }
   if (env.BRANCH_NAME == "ui-staging") {
     sh("mkdir -p data/console")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-staging cp -rf /var/www/console /workspace/data/console')
-    sh("mkdir -p data/site_media")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:staging cp -rf /var/www/static /workspace/data/site_media')
     sh("mkdir -p data/mall")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
   }
+  sh("mkdir -p data/site_media")
+  sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/ndpuz-img/ndpuzsys-ui:latest cp -rf /var/www/static /workspace/data/site_media')
   sh("docker build -t ${imageTag} .")
   sh("docker push ${imageTag}")
   if (env.BRANCH_NAME == "ui-master") {
