@@ -10,13 +10,13 @@ node {
     sh("mkdir -p data/console")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-master cp -rf /var/www/console /workspace/data/console')
     sh("mkdir -p data/mall")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall-master cp -rf /var/www/mall /workspace/data/mall')
   }
   if (env.BRANCH_NAME == "ui-staging") {
     sh("mkdir -p data/console")
     sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:console-staging cp -rf /var/www/console /workspace/data/console')
     sh("mkdir -p data/mall")
-    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall cp -rf /var/www/mall /workspace/data/mall')
+    sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:mall-staging cp -rf /var/www/mall /workspace/data/mall')
   }
   sh("mkdir -p data/site_media")
   sh('docker run --rm -v "$PWD":/workspace registry.aliyuncs.com/xiaolu-img/xiaolusys-ui:latest cp -rf /var/www/static /workspace/data/site_media')
